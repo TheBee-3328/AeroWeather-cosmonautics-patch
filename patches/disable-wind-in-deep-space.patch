@@ -1,11 +1,13 @@
 diff --git a/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java b/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
 --- a/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
 +++ b/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
-@@ -291,5 +291,11 @@
+@@ -291,5 +291,14 @@
      private void applyWindForce(ServerSubLevel subLevel, ServerLevel level, WindState wind, List<Vec3> activePositions) {
-+        // Cosmonautics' deep-space dimension has no atmosphere, so AeroWeather
-+        // must not apply atmospheric wind forces to rockets while they are there.
-+        if (level.dimension().location().equals(ResourceLocation.fromNamespaceAndPath("rocketnautics", "deep_space"))) {
++        // Cosmonautics' Moon and deep-space dimensions have no normal
++        // atmosphere, so AeroWeather must not apply atmospheric wind forces there.
++        ResourceLocation dimension = level.dimension().location();
++        if (dimension.getNamespace().equals("rocketnautics")
++                && (dimension.getPath().equals("deep_space") || dimension.getPath().equals("moon"))) {
 +            return;
 +        }
 +
