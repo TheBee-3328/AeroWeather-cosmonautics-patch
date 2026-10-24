@@ -20,7 +20,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: gradle
 
       - name: Check out upstream AeroWeather
         run: git clone --depth 1 https://github.com/PostMalloy/AeroWeather.git upstream
