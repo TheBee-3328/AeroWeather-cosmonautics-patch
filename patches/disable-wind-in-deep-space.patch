@@ -12,3 +12,4 @@ diff --git a/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/Ae
          LiftProfile profile = getOrBuildLiftProfile(subLevel);
          if (profile.liftRatio() <= 0.0) {
              return;
+         }
