@@ -1,0 +1,15 @@
+diff --git a/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java b/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
+--- a/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
++++ b/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
+@@
+     private void applyWindForce(ServerSubLevel subLevel, ServerLevel level, WindState wind, List<Vec3> activePositions) {
++        // Cosmonautics' deep-space dimension has no atmosphere, so AeroWeather
++        // must not apply atmospheric wind forces to rockets while they are there.
++        if (level.dimension().location().equals(ResourceLocation.fromNamespaceAndPath("rocketnautics", "deep_space"))) {
++            return;
++        }
++
+         LiftProfile profile = getOrBuildLiftProfile(subLevel);
+         if (profile.liftRatio() <= 0.0) {
+             return;
+         }
