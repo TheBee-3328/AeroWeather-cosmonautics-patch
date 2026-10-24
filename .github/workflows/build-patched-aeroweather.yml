@@ -1,0 +1,43 @@
+name: Build patched AeroWeather
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out patch repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Check out upstream AeroWeather
+        run: git clone --depth 1 https://github.com/PostMalloy/AeroWeather.git upstream
+
+      - name: Validate and apply patch
+        run: |
+          git -C upstream apply --check "$GITHUB_WORKSPACE/patches/disable-wind-in-deep-space.patch"
+          git -C upstream apply "$GITHUB_WORKSPACE/patches/disable-wind-in-deep-space.patch"
+
+      - name: Build mod
+        working-directory: upstream
+        run: chmod +x gradlew && ./gradlew --no-daemon build
+
+      - name: Upload patched mod JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: AeroWeather-Cosmonautics-patched
+          path: upstream/build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 14
