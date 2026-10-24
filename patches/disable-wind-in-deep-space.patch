@@ -1,7 +1,7 @@
 diff --git a/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java b/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
 --- a/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
 +++ b/src/main/java/com/postmalloy/aeroweather/integration/aeronautics/AeronauticsWindForceApplier.java
-@@ -291,5 +291,14 @@
+@@ -291,5 +291,13 @@
      private void applyWindForce(ServerSubLevel subLevel, ServerLevel level, WindState wind, List<Vec3> activePositions) {
 +        // Cosmonautics' Moon and deep-space dimensions have no normal
 +        // atmosphere, so AeroWeather must not apply atmospheric wind forces there.
