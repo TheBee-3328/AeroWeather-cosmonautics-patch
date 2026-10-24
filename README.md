@@ -1,47 +1,52 @@
 # AeroWeather Cosmonautics Patch
 
-A small source patch for AeroWeather that prevents its Aeronautics/Sable wind-force integration from pushing contraptions in Create: Cosmonautics' deep-space dimension.
+A small source patch for AeroWeather that prevents its Aeronautics/Sable wind-force integration from pushing contraptions in Create: Cosmonautics' Moon and deep-space dimensions.
 
 ## What it changes
 
-The patch adds an early return to `AeronauticsWindForceApplier.applyWindForce(...)` when the active server level is `rocketnautics:deep_space`.
+The patch adds an early return to `AeronauticsWindForceApplier.applyWindForce(...)` when the active server level is either `rocketnautics:deep_space` or `rocketnautics:moon`.
 
-- Wind forces remain enabled in other dimensions.
-- It targets the deep-space dimension ID used by Create: Cosmonautics.
+- Wind forces remain enabled in other dimensions, including the Overworld.
+- Both Cosmonautics dimensions are excluded: the Moon and deep space.
 - It does not change rocket thrust, gravity, drag, or Cosmonautics' own physics.
-- It does not automatically disable wind on the Moon or other planetary dimensions.
+- It is a source patch, not a ready-to-install JAR.
 
 ## Apply it
 
-This is a **source patch**, not a ready-to-install JAR. Apply it to an AeroWeather source checkout:
+Use the AeroWeather source repository and apply the patch before building.
+
+### Linux / macOS
 
 ```bash
-git clone https://github.com/PostMalloy/AeroWeather.git
+git clone --depth 1 https://github.com/PostMalloy/AeroWeather.git
 cd AeroWeather
-git checkout master
-curl -L -o disable-wind-in-deep-space.patch https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch
-git apply --check disable-wind-in-deep-space.patch
-git apply disable-wind-in-deep-space.patch
+curl -L -o disable-wind-in-space.patch https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch
+git apply --check disable-wind-in-space.patch
+git apply disable-wind-in-space.patch
 ./gradlew build
 ```
 
-On Windows PowerShell, use:
+### Windows PowerShell
 
 ```powershell
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch" -OutFile "disable-wind-in-deep-space.patch"
-git apply --check disable-wind-in-deep-space.patch
-git apply disable-wind-in-deep-space.patch
+git clone --depth 1 https://github.com/PostMalloy/AeroWeather.git
+Set-Location AeroWeather
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch" -OutFile "disable-wind-in-space.patch"
+git apply --check disable-wind-in-space.patch
+git apply disable-wind-in-space.patch
 .\gradlew.bat build
 ```
 
-The built JAR will be in `build/libs/`.
+The built mod JAR will be in `build/libs/`. Use the JAR produced by your modified build instead of the original AeroWeather JAR; do not install both simultaneously.
 
-If `git apply --check` fails, the upstream source has changed and the patch needs to be rebased against the AeroWeather version you have.
+If `git apply --check` fails, the AeroWeather source version has changed and the patch needs to be rebased against that version.
 
-## Compatibility
+## Validation status
 
-Designed for the AeroWeather source layout containing `AeronauticsWindForceApplier.java`, Minecraft 1.21.1, and NeoForge. It has not yet been verified in a live Minecraft instance. Test it in a copied instance/world before using it in a main world.
+The unified diff was checked against a fixture containing the exact target method context and applied successfully with `git apply --check` and `git apply`. A full Gradle build and an in-game test have **not** been run in this environment, so the resulting JAR is not yet verified.
+
+Designed for the AeroWeather source layout with Minecraft 1.21.1 and NeoForge.
 
 ## License
 
-The patch modifies AeroWeather source. AeroWeather is licensed under the MIT License; preserve the upstream license and notices when redistributing modified source or binaries.
+This patch modifies AeroWeather source. AeroWeather is licensed under the MIT License; preserve the upstream license and notices when redistributing modified source or binaries.
