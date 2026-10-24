@@ -19,12 +19,22 @@ This is a **source patch**, not a ready-to-install JAR. Apply it to an AeroWeath
 git clone https://github.com/PostMalloy/AeroWeather.git
 cd AeroWeather
 git checkout master
-git apply --check https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch
-git apply https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch
+curl -L -o disable-wind-in-deep-space.patch https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch
+git apply --check disable-wind-in-deep-space.patch
+git apply disable-wind-in-deep-space.patch
 ./gradlew build
 ```
 
-On Windows, use `gradlew.bat build` for the final command. The built JAR will be in `build/libs/`.
+On Windows PowerShell, use:
+
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/TheBee-3328/AeroWeather-cosmonautics-patch/main/patches/disable-wind-in-deep-space.patch" -OutFile "disable-wind-in-deep-space.patch"
+git apply --check disable-wind-in-deep-space.patch
+git apply disable-wind-in-deep-space.patch
+.\gradlew.bat build
+```
+
+The built JAR will be in `build/libs/`.
 
 If `git apply --check` fails, the upstream source has changed and the patch needs to be rebased against the AeroWeather version you have.
 
@@ -34,4 +44,4 @@ Designed for the AeroWeather source layout containing `AeronauticsWindForceAppli
 
 ## License
 
-The patch is a modification to AeroWeather source. AeroWeather is licensed under the MIT License; preserve the upstream license and notices when redistributing modified source or binaries.
+The patch modifies AeroWeather source. AeroWeather is licensed under the MIT License; preserve the upstream license and notices when redistributing modified source or binaries.
